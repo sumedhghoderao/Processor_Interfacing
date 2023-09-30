@@ -1,0 +1,54 @@
+
+#include<stdio.h>
+#include<dos.h>
+#include<stdlib.h>
+#include<process.h>
+#include<conio.h>
+
+void main()
+{
+    int ch;
+    char name[20];
+    union REGS i,o;
+    clrscr();
+    do
+    {
+        printf("\n 1.Create directory  2.Delete directory  3.Create File 4.Delete File  5.Exit");
+        printf("\n Enter the choice");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+        case 1: printf("\n Enter the name of the directory to be created :- ");
+            scanf("%s",name);
+            i.h.ah=0x39;
+            i.x.dx=FP_OFF(name);
+            int86(0x21,&i,&o);
+            printf("\n %s has been created successfully",name);
+            break;
+
+        case 2: printf("Enter the directory to be deleted :-");
+            scanf("%s",name);
+            i.h.ah=0x3A;
+            i.x.dx=FP_OFF(name);
+            int86(0x21,&i,&o);
+            printf("\n %s has been deleted successfully",name);
+            break;
+
+        case 3: printf("Enter the name of the file to be created");
+            scanf("%s",name);
+            i.h.ah=0x3C;
+            i.x.dx=FP_OFF(name);
+            int86(0x21,&i,&o);
+            printf("\n %s has been created successfully",name);
+            break;
+
+        case 4: printf("Enter the file to be deleted");
+            scanf("%s",name);
+            i.h.ah=0x41;
+            i.x.dx=FP_OFF(name);
+            int86(0x21,&i,&o);
+            printf("\n %s has been deleted successfully",name);
+            break;
+       }
+       }while(ch!=5);
+}
