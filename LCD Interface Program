@@ -1,0 +1,28 @@
+RS  EQU P3^2
+EN  EQU P3^3
+
+	org 0h
+	ljmp start
+
+DelaymS:
+	mov r4,#04	;  (4*255) ~ 1000uS = 1mS
+	mov r5,#0	
+loop:
+	djnz r5,loop
+	djnz r4,loop
+	ret
+
+
+	mov P0,A		;Write the value on port P0
+	mov r6,#05h		;Call delay for 5mS
+continue1:
+	lcall DelaymS
+	djnz r6, continue1
+	SETB RS
+	SETB EN
+	mov r6,#01h		;Call delay for 1mS
+continue2:
+	lcall DelaymS
+	djnz r6, continue2
+	MOV P3,#00		; clear the control signals
+	ret
